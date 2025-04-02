@@ -10,10 +10,12 @@ import Privacy from './pages/Privacy';
 import Accessibility from './pages/Accessibility';
 import CookiePreferences from './pages/CookiePreferences';
 import Consultation from './pages/Consultation';
+import DynamicTitle from './components/DynamicTitle';
 
 function App() {
   return (
     <BrowserRouter>
+      <DynamicTitle />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
