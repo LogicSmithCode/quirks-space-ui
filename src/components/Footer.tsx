@@ -5,6 +5,16 @@ import { Globe2, Shield, Bot, Zap, Cloud, Database, Facebook, Instagram, Twitter
 const companyName = import.meta.env.VITE_COMPANY_NAME_LONG;
 const companyNameShort = import.meta.env.VITE_COMPANY_NAME_SHORT;
 
+// Social media handles from environment variables
+const socialMedia = {
+  facebook: import.meta.env.VITE_SOCIAL_FACEBOOK,
+  instagram: import.meta.env.VITE_SOCIAL_INSTAGRAM,
+  twitter: import.meta.env.VITE_SOCIAL_TWITTER,
+  discord: import.meta.env.VITE_SOCIAL_DISCORD,
+  tiktok: import.meta.env.VITE_SOCIAL_TIKTOK,
+  reddit: import.meta.env.VITE_SOCIAL_REDDIT,
+};
+
 export default function Footer() {
   const location = useLocation();
 
@@ -104,7 +114,7 @@ export default function Footer() {
           <p className="text-sm text-gray-400">© 2025, {companyName}, Inc. or its affiliates. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <a
-              href={`https://facebook.com/${companyNameShort.toLowerCase()}`}
+              href={`https://facebook.com/${socialMedia.facebook}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
@@ -113,7 +123,7 @@ export default function Footer() {
               <Facebook className="w-5 h-5" />
             </a>
             <a
-              href={`https://instagram.com/${companyNameShort.toLowerCase()}`}
+              href={`https://instagram.com/${socialMedia.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
@@ -122,7 +132,7 @@ export default function Footer() {
               <Instagram className="w-5 h-5" />
             </a>
             <a
-              href={`https://twitter.com/${companyNameShort.toLowerCase()}`}
+              href={`https://twitter.com/${socialMedia.twitter}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
@@ -131,7 +141,7 @@ export default function Footer() {
               <Twitter className="w-5 h-5" />
             </a>
             <a
-              href={`https://discord.gg/${companyNameShort.toLowerCase()}`}
+              href={`https://discord.gg/${socialMedia.discord}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
@@ -140,7 +150,7 @@ export default function Footer() {
               <MessageSquare className="w-5 h-5" />
             </a>
             <a
-              href={`https://tiktok.com/@${companyNameShort.toLowerCase()}`}
+              href={`https://tiktok.com/@${socialMedia.tiktok}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
@@ -149,7 +159,7 @@ export default function Footer() {
               <Music2 className="w-5 h-5" />
             </a>
             <a
-              href={`https://reddit.com/r/${companyNameShort.toLowerCase()}`}
+              href={`https://reddit.com/r/${socialMedia.reddit}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
