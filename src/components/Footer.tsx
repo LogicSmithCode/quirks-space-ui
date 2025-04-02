@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Globe2, Shield, Bot, Zap, Cloud, Database, Facebook, Instagram, Twitter, MessageSquare, Music2, Share2 } from 'lucide-react';
 
+const companyName = import.meta.env.VITE_COMPANY_NAME_LONG;
+const companyNameShort = import.meta.env.VITE_COMPANY_NAME_SHORT;
+
 export default function Footer() {
   const location = useLocation();
 
@@ -98,10 +101,10 @@ export default function Footer() {
 
         {/* Social Media and Copyright */}
         <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <p className="text-sm text-gray-400">© 2025, Quirks, Inc. or its affiliates. All rights reserved.</p>
+          <p className="text-sm text-gray-400">© 2025, {companyName}, Inc. or its affiliates. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <a
-              href="https://facebook.com/quirksai"
+              href={`https://facebook.com/${companyNameShort.toLowerCase()}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
@@ -110,7 +113,7 @@ export default function Footer() {
               <Facebook className="w-5 h-5" />
             </a>
             <a
-              href="https://instagram.com/quirksai"
+              href={`https://instagram.com/${companyNameShort.toLowerCase()}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
@@ -119,7 +122,7 @@ export default function Footer() {
               <Instagram className="w-5 h-5" />
             </a>
             <a
-              href="https://twitter.com/quirksai"
+              href={`https://twitter.com/${companyNameShort.toLowerCase()}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
@@ -128,7 +131,7 @@ export default function Footer() {
               <Twitter className="w-5 h-5" />
             </a>
             <a
-              href="https://discord.gg/quirksai"
+              href={`https://discord.gg/${companyNameShort.toLowerCase()}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
@@ -137,7 +140,7 @@ export default function Footer() {
               <MessageSquare className="w-5 h-5" />
             </a>
             <a
-              href="https://tiktok.com/@quirksai"
+              href={`https://tiktok.com/@${companyNameShort.toLowerCase()}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
@@ -146,7 +149,7 @@ export default function Footer() {
               <Music2 className="w-5 h-5" />
             </a>
             <a
-              href="https://reddit.com/r/quirksai"
+              href={`https://reddit.com/r/${companyNameShort.toLowerCase()}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-500 transition"
