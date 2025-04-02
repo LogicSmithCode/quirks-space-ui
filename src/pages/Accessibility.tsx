@@ -1,6 +1,8 @@
 import React from 'react';
 import { Eye } from 'lucide-react';
 
+const domain = import.meta.env.VITE_COMPANY_DOMAIN;
+
 export default function Accessibility() {
   return (
     <div className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
@@ -70,7 +72,7 @@ export default function Accessibility() {
         <div className="mt-12 p-6 bg-gray-800/30 rounded-lg">
           <h2 className="text-2xl font-semibold mb-4">Feedback</h2>
           <p className="mb-4">We welcome your feedback on the accessibility of our website. If you encounter any accessibility barriers or have suggestions for improvement, please contact our accessibility team at:</p>
-          <a href="mailto:accessibility@quirks.space" className="text-blue-400 hover:text-blue-300">accessibility@quirks.space</a>
+          <a href={`mailto:accessibility@${domain}`} className="text-blue-400 hover:text-blue-300">accessibility@{domain}</a>
         </div>
       </div>
     </div>

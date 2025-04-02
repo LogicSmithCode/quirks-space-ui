@@ -1,6 +1,8 @@
 import React from 'react';
 import { Shield, Check } from 'lucide-react';
 
+const companyName = import.meta.env.VITE_COMPANY_NAME_SHORT;
+
 export default function ConsentForm() {
   return (
     <div className="p-6 rounded-2xl bg-gray-800/30 backdrop-blur-sm border border-gray-700">
@@ -11,7 +13,7 @@ export default function ConsentForm() {
 
       <p className="text-gray-300 mb-6">
         By using this website, you automatically and irrevocably consent to the collection, processing, 
-        and unrestricted use of your data by Quirks and its affiliates. Your continued use of this 
+        and unrestricted use of your data by {companyName} and its affiliates. Your continued use of this 
         website constitutes full acceptance of these terms. You further acknowledge and agree that:
       </p>
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { FileCheck } from 'lucide-react';
 
+const domain = import.meta.env.VITE_COMPANY_DOMAIN;
+
 export default function Terms() {
   return (
     <div className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -78,7 +80,7 @@ export default function Terms() {
           <div className="p-6 rounded-xl bg-gray-800/30 backdrop-blur-sm border border-gray-700">
             <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
             <p className="text-gray-300 mb-4">By using our Services, you acknowledge that you have read, understood, and irrevocably agreed to these binding terms. For inquiries, contact:</p>
-            <a href="mailto:legal@quirks.space" className="text-blue-400 hover:text-blue-300">legal@quirks.space</a>
+            <a href={`mailto:legal@${domain}`} className="text-blue-400 hover:text-blue-300">legal@{domain}</a>
           </div>
         </div>
       </div>

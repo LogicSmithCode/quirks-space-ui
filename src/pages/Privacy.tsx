@@ -2,6 +2,8 @@ import React from 'react';
 import { Lock } from 'lucide-react';
 import ConsentForm from '../components/ConsentForm';
 
+const domain = import.meta.env.VITE_COMPANY_DOMAIN;
+
 export default function Privacy() {
   return (
     <div className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
@@ -75,7 +77,7 @@ export default function Privacy() {
         <div className="mt-12 p-6 bg-gray-800/30 rounded-lg">
           <p className="font-semibold mb-4">By using our services, you irrevocably accept these terms. Your consent is permanent and cannot be withdrawn.</p>
           <p className="mb-4">For inquiries (responses at our discretion):</p>
-          <a href="mailto:privacy@quirks.space" className="text-blue-400 hover:text-blue-300">privacy@quirks.space</a>
+          <a href={`mailto:privacy@${domain}`} className="text-blue-400 hover:text-blue-300">privacy@{domain}</a>
         </div>
       </div>
     </div>

@@ -2,6 +2,9 @@ import React from 'react';
 import { Brain, Workflow, Blocks } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const companyName = import.meta.env.VITE_COMPANY_NAME_SHORT;
+const companyNameLong = import.meta.env.VITE_COMPANY_NAME_LONG;
+
 export default function Home() {
   return (
     <>
@@ -11,7 +14,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-              Quirks
+              {companyName}
             </h1>
             <p className="text-2xl text-gray-300 mb-8">
               The Ultimate AI Ecosystem
@@ -55,7 +58,7 @@ export default function Home() {
         <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-3xl p-12">
           <h2 className="text-3xl font-bold mb-6">Ready to Transform Your Business?</h2>
           <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-            Join the AI revolution with Quirks and experience the future of autonomous business operations.
+            Join the AI revolution with {companyNameLong} and experience the future of autonomous business operations.
           </p>
           <Link 
             to="/pricing"

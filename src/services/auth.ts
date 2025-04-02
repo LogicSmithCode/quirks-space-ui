@@ -1,5 +1,7 @@
 import api from './api';
 
+const domain = import.meta.env.VITE_COMPANY_DOMAIN;
+
 export interface LoginCredentials {
   email: string;
   password: string;

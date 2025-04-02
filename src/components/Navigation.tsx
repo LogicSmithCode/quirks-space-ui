@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Bot } from 'lucide-react';
 
+const companyName = import.meta.env.VITE_COMPANY_NAME_SHORT;
+
 export default function Navigation() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -25,7 +27,7 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2">
             <Bot className="w-8 h-8 text-blue-500" />
-            <span className="text-xl font-bold">Quirks</span>
+            <span className="text-xl font-bold">{companyName}</span>
           </Link>
           <div className="flex gap-6">
             {!isHomePage && (
