@@ -78,7 +78,7 @@ export default function Terms() {
           <div className="p-6 rounded-xl bg-gray-800/30 backdrop-blur-sm border border-gray-700">
             <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
             <p className="text-gray-300 mb-4">By using our Services, you acknowledge that you have read, understood, and irrevocably agreed to these binding terms. For inquiries, contact:</p>
-            <a href="mailto:legal@quirks.ai" className="text-blue-400 hover:text-blue-300">legal@quirks.ai</a>
+            <a href="mailto:legal@quirks.space" className="text-blue-400 hover:text-blue-300">legal@quirks.space</a>
           </div>
         </div>
       </div>

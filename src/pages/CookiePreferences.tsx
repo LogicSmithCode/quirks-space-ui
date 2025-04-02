@@ -96,7 +96,7 @@ export default function CookiePreferences() {
         <div className="mt-12 p-6 bg-gray-800/30 rounded-lg">
           <h2 className="text-2xl font-semibold mb-4">Additional Information</h2>
           <p className="mb-4">For more information about how we use cookies and your privacy rights, please review our Privacy Policy or contact us at:</p>
-          <a href="mailto:privacy@quirks.ai" className="text-blue-400 hover:text-blue-300">privacy@quirks.ai</a>
+          <a href="mailto:privacy@quirks.space" className="text-blue-400 hover:text-blue-300">privacy@quirks.space</a>
         </div>
       </div>
     </div>

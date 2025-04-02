@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://api.quirks.ai',
+  baseURL: import.meta.env.VITE_API_URL || 'https://api.quirks.space',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

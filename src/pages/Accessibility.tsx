@@ -70,7 +70,7 @@ export default function Accessibility() {
         <div className="mt-12 p-6 bg-gray-800/30 rounded-lg">
           <h2 className="text-2xl font-semibold mb-4">Feedback</h2>
           <p className="mb-4">We welcome your feedback on the accessibility of our website. If you encounter any accessibility barriers or have suggestions for improvement, please contact our accessibility team at:</p>
-          <a href="mailto:accessibility@quirks.ai" className="text-blue-400 hover:text-blue-300">accessibility@quirks.ai</a>
+          <a href="mailto:accessibility@quirks.space" className="text-blue-400 hover:text-blue-300">accessibility@quirks.space</a>
         </div>
       </div>
     </div>
