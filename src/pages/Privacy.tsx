@@ -75,7 +75,7 @@ export default function Privacy() {
         <div className="mt-12 p-6 bg-gray-800/30 rounded-lg">
           <p className="font-semibold mb-4">By using our services, you irrevocably accept these terms. Your consent is permanent and cannot be withdrawn.</p>
           <p className="mb-4">For inquiries (responses at our discretion):</p>
-          <a href="mailto:privacy@quirks.ai" className="text-blue-400 hover:text-blue-300">privacy@quirks.ai</a>
+          <a href="mailto:privacy@quirks.space" className="text-blue-400 hover:text-blue-300">privacy@quirks.space</a>
         </div>
       </div>
     </div>
