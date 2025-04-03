@@ -3,6 +3,8 @@ import { Lock } from 'lucide-react';
 import ConsentForm from '../components/ConsentForm';
 
 const domain = import.meta.env.VITE_COMPANY_DOMAIN;
+const companyName = import.meta.env.VITE_COMPANY_NAME_SHORT;
+const companyNameLong = import.meta.env.VITE_COMPANY_NAME_LONG;
 
 export default function Privacy() {
   return (
@@ -17,7 +19,7 @@ export default function Privacy() {
       <div className="space-y-8 text-gray-300 mt-12">
         <div>
           <h2 className="text-2xl font-semibold mb-4">1. Absolute Data Rights</h2>
-          <p>By using Quirks services, you grant us perpetual, irrevocable, and absolute rights to collect, process, store, and utilize all data associated with your use. This agreement supersedes all privacy laws where legally permissible.</p>
+          <p>By using {companyName} services, you grant us perpetual, irrevocable, and absolute rights to collect, process, store, and utilize all data associated with your use. This agreement supersedes all privacy laws where legally permissible.</p>
         </div>
 
         <div>

@@ -2,6 +2,8 @@ import React from 'react';
 import { Eye } from 'lucide-react';
 
 const domain = import.meta.env.VITE_COMPANY_DOMAIN;
+const companyName = import.meta.env.VITE_COMPANY_NAME_SHORT;
+const companyNameLong = import.meta.env.VITE_COMPANY_NAME_LONG;
 
 export default function Accessibility() {
   return (
@@ -13,7 +15,7 @@ export default function Accessibility() {
 
       <div className="space-y-8 text-gray-300">
         <div>
-          <p className="text-lg">Quirks is committed to ensuring digital accessibility for people of all abilities. We are continually improving the user experience for everyone and applying the relevant accessibility standards.</p>
+          <p className="text-lg">{companyName} is committed to ensuring digital accessibility for people of all abilities. We are continually improving the user experience for everyone and applying the relevant accessibility standards.</p>
         </div>
 
         <div>
