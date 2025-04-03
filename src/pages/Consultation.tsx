@@ -1,10 +1,112 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, Clock, Users, MessageSquare } from 'lucide-react';
+import { consultationService } from '../services/consultation';
+import { useLocation } from 'react-router-dom';
+
+const calendlyUsername = import.meta.env.VITE_CALENDLY_USERNAME;
+const calendlyEvent = import.meta.env.VITE_CALENDLY_EVENT;
+
+const CATEGORY_MAP = {
+  '/pricing/individual': 'Individual Users',
+  '/pricing/partner': 'Developer & Partner',
+  '/pricing/business': 'AI-Driven Business',
+  '/pricing/enterprise': 'Enterprise Solutions',
+  '/pricing/government': 'Government & Innovation',
+  '/pricing/strategic': 'Strategic Investment',
+  '/pricing/transformation': 'Enterprise Transformation',
+  '/pricing/security': 'Quantum-Safe Security',
+  '/pricing/ethics': 'Ethical AI Audits',
+  '/pricing/compliance': 'Global Compliance Orchestrator',
+};
 
 export default function Consultation() {
-  const handleSubmit = (e: React.FormEvent) => {
+  const location = useLocation();
+  const [calendlyLink, setCalendlyLink] = useState<string>('');
+
+  // Get category based on referrer path
+  const getCategory = () => {
+    const referrer = document.referrer;
+    const path = new URL(referrer).pathname;
+    return CATEGORY_MAP[path as keyof typeof CATEGORY_MAP] || 'General Inquiry';
+  };
+
+  const openCalendly = (name: string, email: string) => {
+    const calendlyUrl = consultationService.getCalendlyUrl(name, email);
+    const width = 550;
+    const height = 700;
+    const left = window.innerWidth / 2 - width / 2;
+    const top = window.innerHeight / 2 - height / 2;
+    
+    const popup = window.open(
+      calendlyUrl,
+      'Calendly',
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
+
+    // Monitor popup URL for booking completion
+    const checkPopup = setInterval(() => {
+      try {
+        if (popup?.closed) {
+          clearInterval(checkPopup);
+        } else if (popup?.location.href.includes('/invitees/')) {
+          setCalendlyLink(popup.location.href);
+          clearInterval(checkPopup);
+          popup.close();
+        }
+      } catch (e) {
+        // Cross-origin error, ignore
+      }
+    }, 500);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    window.location.href = 'https://calendly.com/quirks-ai/consultation';
+    
+    try {
+      const formData = new FormData(e.currentTarget);
+      
+      // Validate form data
+      const name = formData.get('name') as string;
+      const email = formData.get('email') as string;
+      const company = formData.get('company') as string;
+      const message = formData.get('message') as string;
+      const category = getCategory();
+      
+      if (!name || !email || !company) {
+        throw new Error('Please fill in all required fields');
+      }
+      
+      // Store form data
+      const formDataObj = { name, email, company, message, category };
+      consultationService.storeFormData(formDataObj);
+
+      // Open Calendly first to get the booking link
+      openCalendly(name, email);
+
+      // Wait for Calendly link before submitting to webhook
+      const checkCalendlyLink = setInterval(async () => {
+        if (calendlyLink) {
+          clearInterval(checkCalendlyLink);
+          
+          // Submit to webhook with Calendly link
+          await consultationService.scheduleConsultation({
+            ...formDataObj,
+            calendlyLink,
+          });
+
+          // Clear stored data after successful submission
+          consultationService.clearStoredFormData();
+          e.currentTarget.reset();
+        }
+      }, 500);
+    } catch (error) {
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'An unexpected error occurred. Please try again later.';
+      
+      console.error('Consultation submission error:', error);
+      alert(errorMessage);
+    }
   };
 
   return (
@@ -41,6 +143,7 @@ export default function Consultation() {
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   required
                   className="w-full px-4 py-2 bg-gray-900/50 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -51,6 +154,7 @@ export default function Consultation() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   required
                   className="w-full px-4 py-2 bg-gray-900/50 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -61,6 +165,7 @@ export default function Consultation() {
                 <input
                   type="text"
                   id="company"
+                  name="company"
                   required
                   className="w-full px-4 py-2 bg-gray-900/50 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -70,6 +175,7 @@ export default function Consultation() {
                 <label htmlFor="message" className="block text-sm font-medium mb-2">How can we help?</label>
                 <textarea
                   id="message"
+                  name="message"
                   rows={4}
                   className="w-full px-4 py-2 bg-gray-900/50 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 ></textarea>
