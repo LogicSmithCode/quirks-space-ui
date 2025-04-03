@@ -1,14 +1,9 @@
-import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 
 const webhookUrl = import.meta.env.VITE_WEBHOOK_URL;
 const domain = import.meta.env.VITE_COMPANY_DOMAIN;
 const calendlyUsername = import.meta.env.VITE_CALENDLY_USERNAME;
 const calendlyEvent = import.meta.env.VITE_CALENDLY_EVENT;
-
-// Initialize Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export interface ConsultationRequest {
   name: string;
@@ -62,32 +57,33 @@ export const consultationService = {
 
   async scheduleConsultation(data: ConsultationRequest) {
     try {
-      const { data: response, error } = await supabase.functions.invoke('webhook-consultation', {
-        body: {
-          name: data.name,
-          email: data.email,
-          company: data.company,
-          message: data.message || '',
-          source: domain,
-          category: data.category || 'general',
-          submitted_at: new Date().toISOString(),
-          webhook_url: webhookUrl
+      const response = await axios.post(webhookUrl, {
+        data: {
+          consultation: {
+            name: data.name,
+            email: data.email,
+            company: data.company,
+            message: data.message || '',
+            source: domain,
+            category: data.category || 'general',
+            submitted_at: new Date().toISOString()
+          }
+        }
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
         }
       });
 
-      if (error) {
-        console.error('Supabase function error:', error);
-        throw new Error('Failed to submit consultation request');
-      }
-
-      if (!response.success) {
-        throw new Error('Failed to submit consultation request');
+      if (!response.data?.success) {
+        throw new Error(response.data?.error || 'Failed to submit consultation request');
       }
 
       return { success: true };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Consultation request error:', error);
-      throw new Error('Failed to submit consultation request. Please try again later.');
+      const errorMessage = error.response?.data?.error || error.message || 'Failed to submit consultation request';
+      throw new Error(`${errorMessage}. Please try again later.`);
     }
   }
 };

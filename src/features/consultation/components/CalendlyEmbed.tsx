@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ConsultationFormData } from '../types';
 import { consultationService } from '../../../services/consultation';
 
@@ -7,7 +7,25 @@ interface CalendlyEmbedProps {
 }
 
 export function CalendlyEmbed({ formData }: CalendlyEmbedProps) {
-  const calendlyUrl = consultationService.getCalendlyUrl(formData.name, formData.email);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current && window.Calendly) {
+      const url = consultationService.getCalendlyUrl(formData.name, formData.email);
+      
+      window.Calendly.initInlineWidget({
+        url,
+        parentElement: containerRef.current,
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+        },
+        styles: {
+          height: '700px'
+        }
+      });
+    }
+  }, [formData]);
   
   return (
     <div className="py-20 px-4 sm:px-6 lg:px-8">
@@ -17,14 +35,7 @@ export function CalendlyEmbed({ formData }: CalendlyEmbedProps) {
           <p className="text-xl text-gray-400">Choose a time that works best for you</p>
         </div>
         <div className="rounded-lg overflow-hidden bg-gray-800/30 backdrop-blur-sm border border-gray-700">
-          <iframe
-            src={calendlyUrl}
-            width="100%"
-            height="700"
-            frameBorder="0"
-            title="Select a time for your consultation"
-            className="calendly-inline-widget"
-          />
+          <div ref={containerRef} />
         </div>
       </div>
     </div>
