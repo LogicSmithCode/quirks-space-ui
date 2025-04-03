@@ -3,15 +3,21 @@ import { useConsultationForm } from '../features/consultation/hooks/useConsultat
 import { useCalendlyEvents } from '../features/consultation/hooks/useCalendlyEvents';
 import { ConsultationBenefits } from '../features/consultation/components/ConsultationBenefits';
 import { ConsultationForm } from '../features/consultation/components/ConsultationForm';
-import { CalendlyEmbed } from '../features/consultation/components/CalendlyEmbed';
 
 export default function Consultation() {
-  const { formData, showCalendly, handleSubmit, handleInputChange } = useConsultationForm();
-  useCalendlyEvents();
-
-  if (showCalendly) {
-    return <CalendlyEmbed formData={formData} />;
-  }
+  const { 
+    formData, 
+    isSubmitting, 
+    error, 
+    isSuccess, 
+    isScheduled,
+    handleSubmit, 
+    handleInputChange, 
+    resetForm,
+    handleScheduleComplete 
+  } = useConsultationForm();
+  
+  useCalendlyEvents(handleScheduleComplete);
 
   return (
     <div className="py-20 px-4 sm:px-6 lg:px-8">
@@ -27,6 +33,11 @@ export default function Consultation() {
             formData={formData}
             onSubmit={handleSubmit}
             onChange={handleInputChange}
+            isSubmitting={isSubmitting}
+            error={error}
+            isSuccess={isSuccess}
+            isScheduled={isScheduled}
+            onReset={resetForm}
           />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ConsultationFormData } from '../types';
 import { CATEGORY_MAP } from '../constants';
@@ -8,57 +8,97 @@ const INITIAL_FORM_STATE: ConsultationFormData = {
   name: '',
   email: '',
   company: '',
-  message: ''
+  message: '',
 };
 
 export function useConsultationForm() {
   const location = useLocation();
-  const [showCalendly, setShowCalendly] = useState(false);
-  const [formData, setFormData] = useState<ConsultationFormData>(INITIAL_FORM_STATE);
+  const [formData, setFormData] =
+    useState<ConsultationFormData>(INITIAL_FORM_STATE);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isScheduled, setIsScheduled] = useState(false);
 
   const getCategory = () => {
-    const referrer = document.referrer;
-    const path = new URL(referrer).pathname;
-    return CATEGORY_MAP[path] || 'General Inquiry';
+    try {
+      const path = location.pathname;
+      return CATEGORY_MAP[path] || 'General Inquiry';
+    } catch {
+      return 'General Inquiry';
+    }
+  };
+
+  const resetForm = () => {
+    setFormData(INITIAL_FORM_STATE);
+    setIsSuccess(false);
+    setIsScheduled(false);
+    setError(null);
+  };
+
+  const handleScheduleComplete = () => {
+    setIsScheduled(true);
+    setIsSuccess(true);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setError(null);
+
     try {
       const category = getCategory();
       const consultationData = { ...formData, category };
-      
-      await consultationService.scheduleConsultation(consultationData);
-      setShowCalendly(true);
+
+      // Store the form data
       consultationService.storeFormData(consultationData);
-    } catch (error) {
-      console.error('Consultation submission error:', error);
-      alert('There was a problem submitting your request. Please try again.');
+
+      // Open Calendly popup with prefilled data and improved UX parameters
+      if (window.Calendly) {
+        const params = new URLSearchParams({
+          name: formData.name,
+          email: formData.email,
+          hide_event_type_details: '1',
+          hide_gdpr: '1',
+          background_color: '131e34',
+          text_color: '101b2e',
+          primary_color: '0a0f19',
+        });
+
+        window.Calendly.initPopupWidget({
+          url: `https://calendly.com/code-surajpatro/30min?${params.toString()}`,
+        });
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'An unexpected error occurred'
+      );
+      console.error('Form submission error:', err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setError(null);
   };
-
-  useEffect(() => {
-    const storedData = consultationService.getStoredFormData();
-    if (storedData) {
-      setFormData({
-        name: storedData.name || '',
-        email: storedData.email || '',
-        company: storedData.company || '',
-        message: storedData.message || ''
-      });
-    }
-  }, []);
 
   return {
     formData,
-    showCalendly,
+    isSubmitting,
+    error,
+    isSuccess,
+    isScheduled,
     handleSubmit,
-    handleInputChange
+    handleInputChange,
+    resetForm,
+    handleScheduleComplete,
   };
 }
