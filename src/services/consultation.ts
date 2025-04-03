@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { CalendlyEventData } from '../features/consultation/types';
 
 const webhookUrl = import.meta.env.VITE_WEBHOOK_URL;
 const domain = import.meta.env.VITE_COMPANY_DOMAIN;
@@ -11,6 +12,14 @@ export interface ConsultationRequest {
   company: string;
   message: string;
   category?: string;
+  calendlyEvent?: {
+    eventType: string;
+    startTime: string;
+    endTime: string;
+    schedulingUrl: string;
+    cancelUrl: string;
+    rescheduleUrl: string;
+  };
 }
 
 const STORAGE_KEY = `consultation_data_${domain}`;
@@ -55,18 +64,50 @@ export const consultationService = {
     return `https://calendly.com/${calendlyUsername}/${calendlyEvent}?${params.toString()}`;
   },
 
+  async updateConsultationWithCalendlyEvent(eventData: CalendlyEventData) {
+    const storedData = this.getStoredFormData();
+    if (!storedData) return;
+
+    const consultationData: ConsultationRequest = {
+      ...storedData,
+      calendlyEvent: {
+        eventType: eventData.event_type.name,
+        startTime: eventData.event.start_time,
+        endTime: eventData.event.end_time,
+        schedulingUrl: eventData.scheduling_url,
+        cancelUrl: eventData.cancel_url,
+        rescheduleUrl: eventData.reschedule_url
+      }
+    };
+
+    try {
+      await this.scheduleConsultation(consultationData);
+    } catch (error) {
+      console.error('Failed to update consultation with Calendly event:', error);
+      throw error;
+    }
+  },
+
   async scheduleConsultation(data: ConsultationRequest) {
     try {
       const response = await axios.post(webhookUrl, {
-        data: {
-          consultation: {
+        webhookTrigger: {
+          payload: {
             name: data.name,
             email: data.email,
-            company: data.company,
             message: data.message || '',
+            company: data.company,
             source: domain,
             category: data.category || 'general',
-            submitted_at: new Date().toISOString()
+            submitted_at: new Date().toISOString(),
+            calendly_event: data.calendlyEvent ? {
+              event_type: data.calendlyEvent.eventType,
+              start_time: data.calendlyEvent.startTime,
+              end_time: data.calendlyEvent.endTime,
+              scheduling_url: data.calendlyEvent.schedulingUrl,
+              cancel_url: data.calendlyEvent.cancelUrl,
+              reschedule_url: data.calendlyEvent.rescheduleUrl
+            } : undefined
           }
         }
       }, {
