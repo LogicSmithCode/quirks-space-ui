@@ -11,6 +11,13 @@ import Accessibility from './pages/Accessibility';
 import CookiePreferences from './pages/CookiePreferences';
 import Consultation from './pages/Consultation';
 import DynamicTitle from './components/DynamicTitle';
+import { initializeGA } from './services/analytics';
+
+// Initialize Google Analytics
+const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+if (measurementId) {
+  initializeGA(measurementId);
+}
 
 function App() {
   return (
