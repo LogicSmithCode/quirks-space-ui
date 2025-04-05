@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Cookie } from 'lucide-react';
+import { trackEvent, updateConsent } from '../services/analytics';
 
 const domain = import.meta.env.VITE_COMPANY_DOMAIN;
 
@@ -17,10 +18,25 @@ export default function CookiePreferences() {
       ...prev,
       [category]: !prev[category],
     }));
+
+    trackEvent('cookie_preference_change', {
+      category,
+      enabled: !preferences[category]
+    });
   };
 
   const handleSave = () => {
-    // Here you would implement the actual cookie preference saving logic
+    // Update GA consent based on preferences
+    updateConsent(preferences.performance, preferences.marketing);
+
+    trackEvent('cookie_preferences_saved', {
+      preferences: {
+        performance: preferences.performance,
+        functional: preferences.functional,
+        marketing: preferences.marketing
+      }
+    });
+
     alert('Cookie preferences saved!');
   };
 
