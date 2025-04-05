@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
@@ -11,15 +11,20 @@ import Accessibility from './pages/Accessibility';
 import CookiePreferences from './pages/CookiePreferences';
 import Consultation from './pages/Consultation';
 import DynamicTitle from './components/DynamicTitle';
-import { initializeGA } from './services/analytics';
-
-// Initialize Google Analytics
-const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
-if (measurementId) {
-  initializeGA(measurementId);
-}
+import { initializeGA, updateConsent } from './services/analytics';
 
 function App() {
+  useEffect(() => {
+    const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+    if (measurementId) {
+      // Initialize GA with consent mode
+      initializeGA(measurementId);
+      
+      // Default to denied until user provides consent
+      updateConsent(false, false);
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <DynamicTitle />

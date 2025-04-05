@@ -1,11 +1,20 @@
 import React from 'react';
 import { Brain, Workflow, Blocks } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { trackEvent } from '../services/analytics';
 
 const companyName = import.meta.env.VITE_COMPANY_NAME_SHORT;
 const companyNameLong = import.meta.env.VITE_COMPANY_NAME_LONG;
 
 export default function Home() {
+  const handleCTAClick = (action: string) => {
+    trackEvent('home_cta_click', {
+      action,
+      section: 'hero',
+      component: 'home'
+    });
+  };
+
   return (
     <>
       {/* Hero Section */}
@@ -25,12 +34,14 @@ export default function Home() {
             <div className="flex justify-center gap-4">
               <Link 
                 to="/pricing"
+                onClick={() => handleCTAClick('get_started')}
                 className="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-full font-semibold transition"
               >
                 Get Started
               </Link>
               <Link 
                 to="/features"
+                onClick={() => handleCTAClick('learn_more')}
                 className="px-8 py-3 border border-blue-600 rounded-full font-semibold hover:bg-blue-600/10 transition"
               >
                 Learn More
@@ -62,6 +73,7 @@ export default function Home() {
           </p>
           <Link 
             to="/pricing"
+            onClick={() => handleCTAClick('start_journey')}
             className="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-full font-semibold transition"
           >
             Start Your Journey
