@@ -20,6 +20,8 @@ export default function WaitingListForm({ isOpen, onClose }: WaitingListFormProp
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const domain = import.meta.env.VITE_COMPANY_DOMAIN;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -38,6 +40,7 @@ export default function WaitingListForm({ isOpen, onClose }: WaitingListFormProp
           {
             name: formData.name,
             email: formData.email.toLowerCase(),
+            domain: domain,
             status: 'pending'
           }
         ]);

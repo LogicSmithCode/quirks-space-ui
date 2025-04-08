@@ -1,14 +1,14 @@
 /*
-  # Update waitlist table with environment variable name
+  # Update waitlist table to include domain
 
   1. Changes
-    - Safely create or update waitlist table
-    - Ensure RLS is enabled
-    - Safely create or update policies
+    - Add domain column to waitlist table
+    - Maintain existing RLS policies
+    - Keep all other columns and constraints
     
   2. Security
-    - Maintain existing RLS policies
-    - Ensure proper access control
+    - Maintain RLS enabled
+    - Keep existing access policies
 */
 
 DO $$
@@ -17,11 +17,12 @@ BEGIN
   DROP POLICY IF EXISTS "Anyone can join waitlist" ON waitlist;
   DROP POLICY IF EXISTS "Admins can read waitlist" ON waitlist;
   
-  -- Create or update the table
+  -- Create or update the table with domain column
   CREATE TABLE IF NOT EXISTS waitlist (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     name text NOT NULL,
     email text NOT NULL UNIQUE,
+    domain text NOT NULL,
     created_at timestamptz DEFAULT now(),
     status text DEFAULT 'pending'
   );
