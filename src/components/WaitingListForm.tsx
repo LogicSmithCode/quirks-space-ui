@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { trackEvent } from '../services/analytics';
-import { supabase } from '../services/supabase';
+import { supabase, tables } from '../services/supabase';
 import Modal from './Modal';
 
 interface WaitingListFormProps {
@@ -33,7 +33,7 @@ export default function WaitingListForm({ isOpen, onClose }: WaitingListFormProp
 
       // Insert into Supabase
       const { error: supabaseError } = await supabase
-        .from('waitlist')
+        .from(tables.waitlist)
         .insert([
           {
             name: formData.name,
