@@ -37,7 +37,7 @@ export default function Auth() {
                     inputBorder: '#374151',
                     inputBorderHover: '#4b5563',
                     inputBorderFocus: '#3b82f6',
-                    inputText: 'white',
+                    inputText: 'black',
                     inputPlaceholder: '#9ca3af',
                   },
                 },
