@@ -49,7 +49,9 @@ export default function Auth() {
                 label: 'auth-label',
               },
             }}
-            providers={['google', 'github']}
+            view="sign_in"
+            showLinks={true}
+            providers={[]}
             redirectTo={`${window.location.origin}/auth/callback`}
           />
         </div>
