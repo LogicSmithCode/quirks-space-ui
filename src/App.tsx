@@ -42,7 +42,7 @@ function App() {
             <Route path="accessibility" element={<Accessibility />} />
             <Route path="cookie-preferences" element={<CookiePreferences />} />
             <Route path="consultation" element={<Consultation />} />
-            <Route path="auth" element={<Auth />} />
+            <Route path="auth/*" element={<Auth />} />
             <Route
               path="dashboard"
               element={

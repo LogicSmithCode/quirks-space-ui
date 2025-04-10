@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Auth as SupabaseAuth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
@@ -11,11 +11,25 @@ export default function Auth() {
   const { user } = useAuth();
   const from = (location.state as any)?.from?.pathname || '/dashboard';
 
-  // Redirect if already authenticated
-  if (user) {
-    navigate(from, { replace: true });
-    return null;
-  }
+  // Get the site URL from environment variable or use the current origin
+  const siteUrl = import.meta.env.VITE_SITE_URL || window.location.origin;
+
+    // Redirect if already authenticated
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, from]);
+
+  // Listen for auth state changes from Supabase Auth UI
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN') {
+        navigate(from, { replace: true });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate, from]);
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -37,7 +51,7 @@ export default function Auth() {
                     inputBorder: '#374151',
                     inputBorderHover: '#4b5563',
                     inputBorderFocus: '#3b82f6',
-                    inputText: 'black',
+                    inputText: 'white',
                     inputPlaceholder: '#9ca3af',
                   },
                 },
@@ -52,7 +66,7 @@ export default function Auth() {
             view="sign_in"
             showLinks={true}
             providers={[]}
-            redirectTo={window.location.origin}
+            redirectTo={`${siteUrl}/auth/callback`}
           />
         </div>
       </div>
