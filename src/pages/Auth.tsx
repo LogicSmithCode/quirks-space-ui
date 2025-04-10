@@ -52,7 +52,7 @@ export default function Auth() {
             view="sign_in"
             showLinks={true}
             providers={[]}
-            redirectTo={`${window.location.origin}/auth/callback`}
+            redirectTo={window.location.origin}
           />
         </div>
       </div>
