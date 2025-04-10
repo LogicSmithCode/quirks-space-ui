@@ -14,6 +14,7 @@ export default function Auth() {
   // Get the site URL from environment variable or use the current origin
   const siteUrl = import.meta.env.VITE_SITE_URL || window.location.origin;
 
+  useEffect(() => {
     // Redirect if already authenticated
     if (user) {
       navigate(from, { replace: true });
